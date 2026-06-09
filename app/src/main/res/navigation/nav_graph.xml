@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/OnboardingFragment">
+
+    <fragment
+        android:id="@+id/OnboardingFragment"
+        android:name="com.example.focusguard.OnboardingFragment"
+        android:label="Emotional Anchor"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_OnboardingFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@id/OnboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.focusguard.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
+        <action
+            android:id="@+id/action_FirstFragment_to_StudyFragment"
+            app:destination="@id/StudyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/StudyFragment"
+        android:name="com.example.focusguard.StudyFragment"
+        android:label="Study Protocol"
+        tools:layout="@layout/fragment_study">
+        <action
+            android:id="@+id/action_StudyFragment_to_RecoveryFragment"
+            app:destination="@id/RecoveryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RecoveryFragment"
+        android:name="com.example.focusguard.RecoveryFragment"
+        android:label="Cognitive Recovery"
+        tools:layout="@layout/fragment_recovery" />
+
+    <fragment
+        android:id="@+id/AnalyticsFragment"
+        android:name="com.example.focusguard.AnalyticsFragment"
+        android:label="Analytics"
+        tools:layout="@layout/fragment_analytics" />
+
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.example.focusguard.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/NeuralShopFragment"
+        android:name="com.example.focusguard.NeuralShopFragment"
+        android:label="Neural Shop"
+        tools:layout="@layout/fragment_neural_shop" />
+</navigation>

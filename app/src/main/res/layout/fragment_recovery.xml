@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:padding="24dp">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tv_recovery_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calming Therapeutic UI"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"/>
+
+    <!-- Breathing Visualizer -->
+    <FrameLayout
+        android:id="@+id/breathing_container"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_recovery_title"
+        android:layout_marginTop="32dp">
+
+        <!-- Outer Soft Glow -->
+        <View
+            android:id="@+id/breathing_circle_outer"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:alpha="0.2"
+            android:background="@drawable/brain_glow_cyan" />
+
+        <!-- Main Breathing Circle -->
+        <View
+            android:id="@+id/breathing_circle_inner"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/brain_shape"
+            android:backgroundTint="@color/cyan_glow" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inhale..."
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintTop_toBottomOf="@+id/breathing_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Task List -->
+    <LinearLayout
+        android:id="@+id/ll_tasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tv_instruction"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/card_stats_bg"
+        android:padding="16dp">
+
+        <CheckBox
+            android:id="@+id/cb_drink_water"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Drink Water"
+            android:textColor="@color/white"
+            android:buttonTint="@color/cyan_glow"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_secondary"
+            android:alpha="0.2"
+            android:layout_marginVertical="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cb_stretch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stretch"
+            android:textColor="@color/white"
+            android:buttonTint="@color/cyan_glow"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_secondary"
+            android:alpha="0.2"
+            android:layout_marginVertical="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cb_breathing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3 Min Breathing"
+            android:textColor="@color/white"
+            android:buttonTint="@color/cyan_glow"/>
+    </LinearLayout>
+
+    <!-- Action Button -->
+    <Button
+        android:id="@+id/btn_complete_recovery"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/card_dark"
+        android:text="Restart"
+        android:textAllCaps="false"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="28dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
