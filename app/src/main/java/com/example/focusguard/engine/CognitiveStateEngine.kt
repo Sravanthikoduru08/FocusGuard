@@ -18,13 +18,24 @@ object CognitiveStateEngine {
     val widgetMessage: StateFlow<String?> get() = _widgetMessage
 
     // User Customizations
-    private val _blockedApps = MutableStateFlow(setOf(
-        "com.instagram.android", 
-        "com.facebook.katana", 
-        "com.ss.android.ugc.trill", 
-        "com.google.android.youtube"
-    ))
+    private val _blockedApps = MutableStateFlow<Set<String>>(emptySet())
     val blockedApps: StateFlow<Set<String>> get() = _blockedApps
+
+    fun loadBlockedApps(context: android.content.Context) {
+        val prefs = context.getSharedPreferences("FocusGuardPrefs", android.content.Context.MODE_PRIVATE)
+        val savedApps = prefs.getStringSet("blocked_apps", setOf(
+            "com.instagram.android", 
+            "com.facebook.katana", 
+            "com.ss.android.ugc.trill", 
+            "com.google.android.youtube"
+        )) ?: emptySet()
+        _blockedApps.value = savedApps
+    }
+
+    private fun saveBlockedApps(context: android.content.Context, apps: Set<String>) {
+        val prefs = context.getSharedPreferences("FocusGuardPrefs", android.content.Context.MODE_PRIVATE)
+        prefs.edit().putStringSet("blocked_apps", apps).apply()
+    }
 
     private val _customBlockMessage = MutableStateFlow("Your mind is currently in a high-focus protocol. This environment may disrupt your stabilization.")
     val customBlockMessage: StateFlow<String> get() = _customBlockMessage
@@ -35,6 +46,36 @@ object CognitiveStateEngine {
     // App Usage Tracking
     private val _appUsageMap = MutableStateFlow<Map<String, Long>>(emptyMap())
     val appUsageMap: StateFlow<Map<String, Long>> get() = _appUsageMap
+
+    fun syncRealUsage(context: android.content.Context) {
+        if (!UsageTrackingManager.hasUsageAccessPermission(context)) return
+        
+        val realStats = UsageTrackingManager.getTodayUsageStats(context)
+        _appUsageMap.value = realStats
+        
+        // Update overloadScore based on real data
+        calculateOverloadFromUsage(realStats)
+    }
+
+    private fun calculateOverloadFromUsage(stats: Map<String, Long>) {
+        var newOverload = 0
+        var totalMindlessMillis = 0L
+        
+        val blocked = _blockedApps.value
+        
+        stats.forEach { (pkg, time) ->
+            if (pkg in blocked) {
+                // For every 5 minutes on a blocked app, add 10 to overload
+                val mins = (time / 60000).toInt()
+                newOverload += (mins / 5) * 10
+                totalMindlessMillis += time
+            }
+        }
+        
+        overloadScore = newOverload.coerceIn(0, 150)
+        totalMindlessTimeMillis = totalMindlessMillis
+        updateBrainState()
+    }
 
     private var overloadScore = 0
     private var totalMindlessTimeMillis = 0L
@@ -129,16 +170,21 @@ object CognitiveStateEngine {
         _customBlockMessage.value = message
     }
 
-    fun addBlockedApp(packageName: String) {
-        _blockedApps.value = _blockedApps.value + packageName
+    fun addBlockedApp(context: android.content.Context, packageName: String) {
+        val newSet = _blockedApps.value + packageName
+        _blockedApps.value = newSet
+        saveBlockedApps(context, newSet)
     }
 
-    fun removeBlockedApp(packageName: String) {
-        _blockedApps.value = _blockedApps.value - packageName
+    fun removeBlockedApp(context: android.content.Context, packageName: String) {
+        val newSet = _blockedApps.value - packageName
+        _blockedApps.value = newSet
+        saveBlockedApps(context, newSet)
     }
 
-    fun clearBlockedApps() {
+    fun clearBlockedApps(context: android.content.Context) {
         _blockedApps.value = emptySet()
+        saveBlockedApps(context, emptySet())
     }
 
     fun setStudyModeActive(active: Boolean) {

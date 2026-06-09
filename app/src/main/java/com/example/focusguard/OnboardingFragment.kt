@@ -59,7 +59,10 @@ class OnboardingFragment : Fragment() {
             val quote = binding.etAnchorQuote.text.toString().takeIf { it.isNotBlank() }
                 ?: "I build for my family's better tomorrow."
             viewModel.saveEmotionalAnchor(quote, selectedPhotoUri?.toString())
-            findNavController().navigate(R.id.action_OnboardingFragment_to_FirstFragment)
+        }
+
+        binding.btnSkip.setOnClickListener {
+            viewModel.saveEmotionalAnchor("I build for my family's better tomorrow.", null)
         }
     }
 

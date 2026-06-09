@@ -42,8 +42,28 @@ class AppBlockActivity : AppCompatActivity() {
         }
 
         binding.btnContinueAnyway.setOnClickListener {
-            // Apply XP penalty or just unlock
-            android.widget.Toast.makeText(this, "Shield lowered. Focus broken.", android.widget.Toast.LENGTH_LONG).show()
+            // Apply heavy penalty directly to persistence
+            val currentXP = prefs.getInt("xp", 1250)
+            val currentFocus = prefs.getInt("focus_level", 85)
+            
+            val deduction = (currentXP * 0.20).toInt().coerceAtLeast(50)
+            val newXP = (currentXP - deduction).coerceAtLeast(0)
+            val newFocus = 10 // Crash focus level
+            val newStreak = 0 // Reset streak
+            
+            prefs.edit().apply {
+                putInt("xp", newXP)
+                putInt("focus_level", newFocus)
+                putInt("streak", newStreak)
+                apply()
+            }
+            
+            // Notify UI if it's running
+            val updateIntent = Intent("com.example.focusguard.STATS_UPDATED")
+            updateIntent.setPackage(packageName)
+            sendBroadcast(updateIntent)
+            
+            android.widget.Toast.makeText(this, "Shield lowered. Focus broken. Heavy XP penalty applied.", android.widget.Toast.LENGTH_LONG).show()
             finish()
         }
     }

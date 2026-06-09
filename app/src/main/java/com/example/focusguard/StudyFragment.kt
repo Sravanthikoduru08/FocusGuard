@@ -112,10 +112,9 @@ class StudyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.btnPause.setOnClickListener {
+        binding.btnFinishEarly.setOnClickListener {
             stopStudyService()
-            viewModel.abortStudySession()
-            findNavController().navigateUp()
+            viewModel.onTimerFinished()
         }
 
         viewModel.aiQuestion.observe(viewLifecycleOwner) { question ->
@@ -155,7 +154,7 @@ class StudyFragment : Fragment() {
     }
 
     private fun updatePlayPauseButton(running: Boolean) {
-        binding.btnPlayPause.text = if (running) "Pause Session" else "Resume Session"
+        binding.btnPlayPause.text = if (running) "Pause" else "Resume"
     }
 
     private fun startStudySession(topic: String) {

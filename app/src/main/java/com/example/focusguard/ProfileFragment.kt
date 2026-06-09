@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.focusguard.databinding.FragmentProfileBinding
 import com.example.focusguard.engine.CognitiveStateEngine
 
@@ -28,55 +28,35 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Load existing settings
+        val prefs = requireContext().getSharedPreferences("FocusGuardPrefs", android.content.Context.MODE_PRIVATE)
+        binding.etApiKey.setText(prefs.getString("gemini_api_key", ""))
         binding.etBlockMessage.setText(CognitiveStateEngine.customBlockMessage.value)
         updateBlockedAppsList()
 
         binding.btnBrowseApps.setOnClickListener {
-            showAppPickerDialog()
+            findNavController().navigate(R.id.action_global_AppSelectionFragment)
         }
 
         binding.btnClearApps.setOnClickListener {
-            CognitiveStateEngine.clearBlockedApps()
+            CognitiveStateEngine.clearBlockedApps(requireContext())
             updateBlockedAppsList()
             Toast.makeText(requireContext(), "Restricted list cleared", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnSaveSettings.setOnClickListener {
             val newMessage = binding.etBlockMessage.text.toString().trim()
+            val apiKey = binding.etApiKey.text.toString().trim()
+            
+            requireContext().getSharedPreferences("FocusGuardPrefs", android.content.Context.MODE_PRIVATE)
+                .edit()
+                .putString("gemini_api_key", apiKey)
+                .apply()
+                
             if (newMessage.isNotEmpty()) {
                 CognitiveStateEngine.setCustomBlockMessage(newMessage)
-                Toast.makeText(requireContext(), "Neural configuration saved!", Toast.LENGTH_SHORT).show()
             }
+            Toast.makeText(requireContext(), "Neural configuration saved!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun showAppPickerDialog() {
-        val pm = requireContext().packageManager
-        val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-        
-        val appData = mutableListOf<Pair<String, String>>() // Name to Package
-        
-        for (appInfo in packages) {
-            if (pm.getLaunchIntentForPackage(appInfo.packageName) != null) {
-                val name = pm.getApplicationLabel(appInfo).toString()
-                appData.add(name to appInfo.packageName)
-            }
-        }
-        
-        appData.sortBy { it.first.lowercase() }
-        
-        val names = appData.map { it.first }.toTypedArray()
-        
-        AlertDialog.Builder(requireContext(), R.style.Theme_FocusGuard)
-            .setTitle("Select App to Block")
-            .setItems(names) { _, which ->
-                val selectedApp = appData[which]
-                CognitiveStateEngine.addBlockedApp(selectedApp.second)
-                updateBlockedAppsList()
-                Toast.makeText(requireContext(), "${selectedApp.first} restricted", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 
     private fun updateBlockedAppsList() {

@@ -60,4 +60,14 @@
         android:name="com.example.focusguard.NeuralShopFragment"
         android:label="Neural Shop"
         tools:layout="@layout/fragment_neural_shop" />
+
+    <fragment
+        android:id="@+id/AppSelectionFragment"
+        android:name="com.example.focusguard.AppSelectionFragment"
+        android:label="Block List"
+        tools:layout="@layout/fragment_app_selection" />
+
+    <action
+        android:id="@+id/action_global_AppSelectionFragment"
+        app:destination="@id/AppSelectionFragment" />
 </navigation>
