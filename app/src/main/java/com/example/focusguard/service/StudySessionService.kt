@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.example.focusguard.MainActivity
 import com.example.focusguard.R
 import com.example.focusguard.engine.CognitiveStateEngine
+import com.example.focusguard.engine.DndManager
 import java.util.Locale
 
 class StudySessionService : Service() {
@@ -50,6 +51,7 @@ class StudySessionService : Service() {
 
         android.widget.Toast.makeText(this, "Study Protocol Initiated", android.widget.Toast.LENGTH_SHORT).show()
 
+        DndManager.enableDnd(this)
         startForeground(NOTIFICATION_ID, createNotification("Starting...", topic))
         startTimer(duration, topic)
 
@@ -77,6 +79,7 @@ class StudySessionService : Service() {
                 isRunning = false
                 remainingMillis = 0
                 CognitiveStateEngine.setStudyModeActive(false)
+                DndManager.disableDnd(this@StudySessionService)
                 updateNotification("Session Complete! Return to app.", topic)
                 
                 val intent = Intent("com.example.focusguard.STUDY_TIMER_FINISHED")
@@ -93,6 +96,7 @@ class StudySessionService : Service() {
         timer?.cancel()
         isRunning = false
         CognitiveStateEngine.setStudyModeActive(false) 
+        DndManager.disableDnd(this)
         updateNotification("Session Paused", currentTopic)
         
         val intent = Intent("com.example.focusguard.TIMER_PAUSED")
@@ -104,6 +108,7 @@ class StudySessionService : Service() {
         if (!isRunning && remainingMillis > 0) {
             isRunning = true
             CognitiveStateEngine.setStudyModeActive(true)
+            DndManager.enableDnd(this)
             startTimer(remainingMillis, currentTopic)
             
             val intent = Intent("com.example.focusguard.TIMER_RESUMED")
@@ -153,6 +158,7 @@ class StudySessionService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         timer?.cancel()
+        DndManager.disableDnd(this)
         isRunning = false
     }
 }

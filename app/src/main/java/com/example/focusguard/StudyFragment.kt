@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.focusguard.databinding.FragmentStudyBinding
+import com.example.focusguard.engine.DndManager
 import com.example.focusguard.service.StudySessionService
 import java.util.Locale
 
@@ -78,7 +79,11 @@ class StudyFragment : Fragment() {
         binding.btnStartStudy.setOnClickListener {
             val topic = binding.etTopic.text.toString()
             if (topic.isNotBlank()) {
-                startStudySession(topic)
+                if (DndManager.hasDndPermission(requireContext())) {
+                    startStudySession(topic)
+                } else {
+                    showDndPermissionDialog()
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter a topic", Toast.LENGTH_SHORT).show()
             }
@@ -120,6 +125,22 @@ class StudyFragment : Fragment() {
         viewModel.aiQuestion.observe(viewLifecycleOwner) { question ->
             binding.tvAiQuestion.text = question
         }
+    }
+
+    private fun showDndPermissionDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Do Not Disturb Access Required")
+            .setMessage("To block notifications during your study session, FocusGuard needs 'Do Not Disturb' access. Please grant it in the next screen.")
+            .setPositiveButton("Grant") { _, _ ->
+                DndManager.requestDndPermission(requireContext())
+            }
+            .setNegativeButton("Later") { _, _ ->
+                // Still allow session if user denies? 
+                // The user requested the feature, but maybe they want to start anyway.
+                // Let's prompt them that DND won't work.
+                startStudySession(binding.etTopic.text.toString())
+            }
+            .show()
     }
 
     private fun setupDurationButtons() {
