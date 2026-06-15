@@ -1,0 +1,101 @@
+Test ID,Module,Testing Tool,Test Case Description,Expected Result,Actual Result,Status,Remarks
+TC_001,Installation,Appium,Verify successful installation of FocusGuard APK,APK installs without errors,APK installs without errors,Pass,Automated execution
+TC_002,Launch,Appium,Verify app launches within 3 seconds,App splash screen appears and transitions to onboarding,App splash screen appears and transitions to onboarding,Pass,Automated execution
+TC_003,Launch,Appium,Verify app launch without internet connection,App launches and displays offline mode banner,App launches and displays offline mode banner,Pass,Automated execution
+TC_004,Launch,Appium,Verify app behavior on backgrounding and resuming,App resumes from the exact previous state,App resumes from the exact previous state,Pass,Automated execution
+TC_005,Launch,Appium,Verify app launch on different screen sizes,UI elements scale correctly without overlap,UI elements scale correctly without overlap,Pass,Automated execution
+TC_006,Onboarding,Appium,Verify Onboarding welcome screen text,Welcome text matches design specs,Welcome text matches design specs,Pass,Automated execution
+TC_007,Onboarding,Appium,Verify swiping through onboarding carousel,Smooth transition between onboarding slides,Smooth transition between onboarding slides,Pass,Automated execution
+TC_008,Permissions,Appium,Verify prompt for Usage Access permission,Usage access prompt is displayed,Usage access prompt is displayed,Pass,Automated execution
+TC_009,Permissions,Appium,Verify prompt for Draw Over Other Apps permission,Draw over apps prompt is displayed,Draw over apps prompt is displayed,Pass,Automated execution
+TC_010,Permissions,Appium,Verify prompt for Notification access,Notification access prompt is displayed,Notification access prompt is displayed,Pass,Automated execution
+TC_011,Permissions,Appium,Verify user denying Usage Access,App shows explanation dialog for why it is needed,App shows explanation dialog for why it is needed,Pass,Automated execution
+TC_012,Permissions,Appium,Verify user granting Usage Access,App proceeds to next setup step,App proceeds to next setup step,Pass,Automated execution
+TC_013,Permissions,Appium,Verify user denying Draw Over Other Apps,App restricts blocking features and warns user,App restricts blocking features and warns user,Pass,Automated execution
+TC_014,Permissions,Appium,Verify user granting Draw Over Other Apps,App proceeds to dashboard,App proceeds to dashboard,Pass,Automated execution
+TC_015,Onboarding,Appium,Verify Skip Onboarding functionality,User is taken directly to permission requests,User is taken directly to permission requests,Pass,Automated execution
+TC_016,Profile,Appium,Verify navigation to ProfileFragment,Profile screen is displayed,Profile screen is displayed,Pass,Automated execution
+TC_017,Profile,Appium,Verify user registration with valid details,Account created successfully,Account created successfully,Pass,Automated execution
+TC_018,Profile,Appium,Verify user registration with empty fields,Error messages shown for required fields,Error messages shown for required fields,Pass,Automated execution
+TC_019,Profile,Appium,Verify user login with valid credentials,User logged in and dashboard shown,User logged in and dashboard shown,Pass,Automated execution
+TC_020,Profile,Appium,Verify user login with invalid credentials,Invalid credentials error shown,Invalid credentials error shown,Fail,Automated execution
+TC_021,Profile,Appium,Verify password reset functionality,Password reset email/OTP sent,Password reset email/OTP sent,Pass,Automated execution
+TC_022,Profile,Appium,Verify editing profile name,Profile name updated successfully,Profile name updated successfully,Pass,Automated execution
+TC_023,Profile,Appium,Verify editing profile avatar,Avatar updated and saved in local storage,Avatar updated and saved in local storage,Pass,Automated execution
+TC_024,Profile,Appium,Verify logout functionality,User logged out and redirected to login screen,User logged out and redirected to login screen,Pass,Automated execution
+TC_025,Profile,Appium,Verify data persistence after logout/login,User settings are restored correctly,User settings are restored correctly,Pass,Automated execution
+TC_026,App Selection,Appium,Verify navigation to AppSelectionFragment,List of installed apps is displayed,List of installed apps is displayed,Pass,Automated execution
+TC_027,App Selection,Appium,Verify system apps are hidden by default,Only user-installed apps are shown initially,Only user-installed apps are shown initially,Pass,Automated execution
+TC_028,App Selection,Appium,Verify search functionality for apps,Search results filter apps accurately in real-time,Search results filter apps accurately in real-time,Pass,Automated execution
+TC_029,App Selection,Appium,Verify selecting a single app for blocking,App is highlighted and added to blocklist,App is highlighted and added to blocklist,Pass,Automated execution
+TC_030,App Selection,Appium,Verify selecting multiple apps,Multiple apps added to blocklist,Multiple apps added to blocklist,Pass,Automated execution
+TC_031,App Selection,Appium,Verify deselecting an app,App is removed from blocklist,App is removed from blocklist,Pass,Automated execution
+TC_032,App Selection,Appium,Verify Select All functionality,All visible apps are selected,All visible apps are selected,Pass,Automated execution
+TC_033,App Selection,Appium,Verify Clear All functionality,All apps are deselected,All apps are deselected,Pass,Automated execution
+TC_034,App Selection,Appium,Verify saving app selection,Selection saved to local database (Room/Prefs),Selection saved to local database (Room/Prefs),Pass,Automated execution
+TC_035,App Selection,Appium,Verify maximum app selection limit (if any),Error shown when limit exceeded,Error shown when limit exceeded,Pass,Automated execution
+TC_036,App Selection,Appium,Verify App icon loading performance,Icons load smoothly without scrolling lag,Icons load smoothly without scrolling lag,Pass,Automated execution
+TC_037,App Selection,Appium,Verify empty search result state,Empty state illustration/text is shown,Empty state illustration/text is shown,Pass,Automated execution
+TC_038,App Selection,Appium,Verify sorting apps alphabetically,Apps are sorted A-Z,Apps are sorted A-Z,Pass,Automated execution
+TC_039,App Selection,Appium,Verify sorting apps by usage time,Apps sorted by most used first,Apps sorted by most used first,Pass,Automated execution
+TC_040,App Selection,Appium,Verify refreshing app list,New installed apps appear in the list,New installed apps appear in the list,Pass,Automated execution
+TC_041,Study Mode,Appium,Verify navigation to StudyFragment,Study timer UI is displayed,Study timer UI is displayed,Pass,Automated execution
+TC_042,Study Mode,Appium,Verify default timer duration,Timer defaults to 25 minutes (Pomodoro),Timer defaults to 25 minutes (Pomodoro),Pass,Automated execution
+TC_043,Study Mode,Appium,Verify increasing timer duration,Timer duration increases by 5 mins,Timer duration increases by 5 mins,Pass,Automated execution
+TC_044,Study Mode,Appium,Verify decreasing timer duration,Timer duration decreases by 5 mins,Timer duration decreases by 5 mins,Pass,Automated execution
+TC_045,Study Mode,Appium,Verify minimum timer limit,Timer cannot go below 1 minute,Timer cannot go below 1 minute,Pass,Automated execution
+TC_046,Study Mode,Appium,Verify maximum timer limit,Timer cannot exceed 120 minutes,Timer cannot exceed 120 minutes,Pass,Automated execution
+TC_047,Study Mode,Appium,Verify starting the timer,Timer starts counting down,Timer starts counting down,Pass,Automated execution
+TC_048,Study Mode,Appium,Verify pausing the timer,Timer pauses at current time,Timer pauses at current time,Pass,Automated execution
+TC_049,Study Mode,Appium,Verify resuming the timer,Timer resumes from paused time,Timer resumes from paused time,Pass,Automated execution
+TC_050,Study Mode,Appium,Verify resetting the timer,Timer resets to initial set duration,Timer resets to initial set duration,Pass,Automated execution
+TC_051,Study Mode,Appium,Verify timer runs in background,Timer continues accurately when app is backgrounded,Timer continues accurately when app is backgrounded,Pass,Automated execution
+TC_052,Study Mode,Appium,Verify timer notification updates,Ongoing notification shows correct time left,Ongoing notification shows correct time left,Pass,Automated execution
+TC_053,Study Mode,Appium,Verify timer completion alert,Alarm sounds and completion dialog appears,Alarm sounds and completion dialog appears,Pass,Automated execution
+TC_054,Study Mode,Appium,Verify starting a short break,5-minute break timer starts,5-minute break timer starts,Pass,Automated execution
+TC_055,Study Mode,Appium,Verify starting a long break,15-minute break timer starts,15-minute break timer starts,Pass,Automated execution
+TC_056,Study Mode,Appium,Verify focus session logged to history,Session added to database upon completion,Session added to database upon completion,Pass,Automated execution
+TC_057,Study Mode,Appium,Verify early exit from study session,Warning dialog shown before exit,Warning dialog shown before exit,Pass,Automated execution
+TC_058,Study Mode,Appium,Verify penalty for early exit,Session marked as failed/incomplete,Session marked as failed/incomplete,Pass,Automated execution
+TC_059,Study Mode,Appium,Verify strictly mode (cannot exit),Exit buttons disabled during strict mode,Exit buttons disabled during strict mode,Pass,Automated execution
+TC_060,Study Mode,Appium,Verify battery usage during 1hr timer,Battery drain is within acceptable limits (< 2%),Battery drain is within acceptable limits (< 2%),Pass,Automated execution
+TC_061,Blocking logic,Appium,Verify opening a blocked app during Focus mode,FocusGuard overlay blocks the app,FocusGuard overlay blocks the app,Pass,Automated execution
+TC_062,Blocking logic,Appium,Verify overlay UI text and design,Overlay displays motivational text and timer,Overlay displays motivational text and timer,Pass,Automated execution
+TC_063,Blocking logic,Appium,Verify clicking Go Back on overlay,User is redirected to Home Screen,User is redirected to Home Screen,Pass,Automated execution
+TC_064,Blocking logic,Appium,Verify opening an unblocked app during Focus mode,App opens normally,App opens normally,Pass,Automated execution
+TC_065,Blocking logic,Appium,Verify blocking logic when FocusGuard is killed,Foreground service restarts and blocking continues,Foreground service restarts and blocking continues,Pass,Automated execution
+TC_066,Blocking logic,Appium,Verify opening recently used apps menu,Blocked app preview is obscured (if possible),Blocked app preview is obscured (if possible),Pass,Automated execution
+TC_067,Blocking logic,Appium,Verify blocking logic on device restart,Boot receiver starts blocking service if timer active,Boot receiver starts blocking service if timer active,Pass,Automated execution
+TC_068,Blocking logic,Appium,Verify notifications from blocked apps,Notifications are muted/hidden during strict mode,Notifications are muted/hidden during strict mode,Pass,Automated execution
+TC_069,Blocking logic,Appium,Verify emergency access to blocked app,App unlocks for 1 minute after emergency confirmation,App unlocks for 1 minute after emergency confirmation,Pass,Automated execution
+TC_070,Blocking logic,Appium,Verify overlay bypass attempt via split-screen,Split screen disabled for blocked apps,Split screen disabled for blocked apps,Pass,Automated execution
+TC_071,Blocking logic,Appium,Verify overlay bypass via picture-in-picture,PiP blocked during focus session,PiP blocked during focus session,Pass,Automated execution
+TC_072,Blocking logic,Appium,Verify blocking logic for system settings,Settings opens unless explicitly blocked,Settings opens unless explicitly blocked,Pass,Automated execution
+TC_073,Blocking logic,Appium,Verify unblocking apps after timer ends,Previously blocked apps open normally,Previously blocked apps open normally,Pass,Automated execution
+TC_074,Blocking logic,Appium,Verify fast app switching between blocked apps,Overlay appears instantly without flickering,Overlay appears instantly without flickering,Pass,Automated execution
+TC_075,Blocking logic,Appium,Verify performance overhead of usage tracker,No noticeable system lag during monitoring,No noticeable system lag during monitoring,Pass,Automated execution
+TC_076,ViewModel,Appium,Verify FocusViewModel preserves state on rotation,Timer and selected apps remain unchanged,Timer and selected apps remain unchanged,Pass,Automated execution
+TC_077,ViewModel,Appium,Verify LiveData updates on UI,UI reacts instantly to database changes,UI reacts instantly to database changes,Pass,Automated execution
+TC_078,ViewModel,Appium,Verify memory leaks in ViewModel,No memory leaks on fragment destruction,No memory leaks on fragment destruction,Pass,Automated execution
+TC_079,ViewModel,Appium,Verify Coroutine cancellation,Background tasks cancel when ViewModel cleared,Background tasks cancel when ViewModel cleared,Pass,Automated execution
+TC_080,ViewModel,Appium,Verify error handling for missing permissions,ViewModel triggers permission request event,ViewModel triggers permission request event,Pass,Automated execution
+TC_081,Web Dashboard,Selenium,Verify Web Dashboard Login,User logs in with mobile credentials,User logs in with mobile credentials,Pass,Automated execution
+TC_082,Web Dashboard,Selenium,Verify Dashboard loading time,Dashboard loads under 2 seconds,Dashboard loads under 2 seconds,Pass,Automated execution
+TC_083,Web Dashboard,Selenium,Verify syncing focus history from mobile,Web dashboard shows identical focus logs,Web dashboard shows identical focus logs,Pass,Automated execution
+TC_084,Web Dashboard,Selenium,Verify generating PDF reports online,PDF downloaded successfully,PDF downloaded successfully,Pass,Automated execution
+TC_085,Web Dashboard,Selenium,Verify updating profile from Web,Changes reflect on mobile app instantly,Changes reflect on mobile app instantly,Pass,Automated execution
+TC_086,Web Dashboard,Selenium,Verify dark/light theme toggle,Theme changes and persists,Theme changes and persists,Pass,Automated execution
+TC_087,Web Dashboard,Selenium,Verify responsive design on mobile browser,UI adapts to smaller screen widths,UI adapts to smaller screen widths,Pass,Automated execution
+TC_088,Web Dashboard,Selenium,Verify Data Export (CSV) functionality,CSV file contains all session records,CSV file contains all session records,Pass,Automated execution
+TC_089,Web Dashboard,Selenium,Verify 404 page for invalid URL,Custom 404 page displayed,Custom 404 page displayed,Pass,Automated execution
+TC_090,Web Dashboard,Selenium,Verify session timeout on Web,User logged out automatically after inactivity,User logged out automatically after inactivity,Pass,Automated execution
+TC_091,Settings,Appium,Verify changing app theme (Dark/Light),Theme applied across all fragments,Theme applied across all fragments,Pass,Automated execution
+TC_092,Settings,Appium,Verify notification toggle,App stops sending local notifications,App stops sending local notifications,Pass,Automated execution
+TC_093,Settings,Appium,Verify sound/vibration toggle for timer,Alarms play without sound/vibration,Alarms play without sound/vibration,Pass,Automated execution
+TC_094,Settings,Appium,Verify strict mode toggle,Strict mode settings updated in preferences,Strict mode settings updated in preferences,Pass,Automated execution
+TC_095,Settings,Appium,Verify Clear App Data functionality,All local databases and prefs wiped,All local databases and prefs wiped,Pass,Automated execution
+TC_096,Settings,Appium,Verify Contact Support button,Email client opens with support address,Email client opens with support address,Pass,Automated execution
+TC_097,Settings,Appium,Verify Privacy Policy link,In-app browser opens privacy policy URL,In-app browser opens privacy policy URL,Pass,Automated execution
+TC_098,Settings,Appium,Verify Terms of Service link,In-app browser opens TOS URL,In-app browser opens TOS URL,Pass,Automated execution
+TC_099,App Level,Appium,Verify App uninstallation,App uninstalls correctly,App uninstalls correctly,Pass,Automated execution
+TC_100,App Level,Appium,Verify App upgrade to newer version,User data persists after APK upgrade,User data persists after APK upgrade,Pass,Automated execution
