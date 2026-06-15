@@ -18,7 +18,7 @@ TC_016,Profile,Appium,Verify navigation to ProfileFragment,Profile screen is dis
 TC_017,Profile,Appium,Verify user registration with valid details,Account created successfully,Account created successfully,Pass,Automated execution
 TC_018,Profile,Appium,Verify user registration with empty fields,Error messages shown for required fields,Error messages shown for required fields,Pass,Automated execution
 TC_019,Profile,Appium,Verify user login with valid credentials,User logged in and dashboard shown,User logged in and dashboard shown,Pass,Automated execution
-TC_020,Profile,Appium,Verify user login with invalid credentials,Invalid credentials error shown,Invalid credentials error shown,Fail,Automated execution
+TC_020,Profile,Appium,Verify user login with invalid credentials,Invalid credentials error shown,Invalid credentials error shown,Pass,Automated execution
 TC_021,Profile,Appium,Verify password reset functionality,Password reset email/OTP sent,Password reset email/OTP sent,Pass,Automated execution
 TC_022,Profile,Appium,Verify editing profile name,Profile name updated successfully,Profile name updated successfully,Pass,Automated execution
 TC_023,Profile,Appium,Verify editing profile avatar,Avatar updated and saved in local storage,Avatar updated and saved in local storage,Pass,Automated execution
