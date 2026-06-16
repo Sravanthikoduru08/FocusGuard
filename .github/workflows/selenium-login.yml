@@ -35,12 +35,11 @@ jobs:
         cd cognitive-shield-os-main/selenium-tests
         npm ci || npm install
 
-    - name: Build and Start Production Preview Server
+    - name: Start Development Server
       run: |
         cd cognitive-shield-os-main
-        npm run build
-        npx vite preview --port 5173 &
-        sleep 5
+        npm run dev -- --port 5173 &
+        sleep 10
 
     - name: Run Selenium E2E Tests
       env:
