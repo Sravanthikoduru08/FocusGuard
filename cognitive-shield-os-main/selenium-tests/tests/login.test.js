@@ -75,6 +75,16 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
         console.log('Could not retrieve browser logs:', logErr.message);
       }
 
+      // Fetch and print DOM page source
+      try {
+        const html = await driver.getPageSource();
+        console.log('=== PAGE SOURCE ON FAILURE ===');
+        console.log(html);
+        console.log('==============================');
+      } catch (htmlErr) {
+        console.log('Could not retrieve page source:', htmlErr.message);
+      }
+
       throw err;
     }
   });
