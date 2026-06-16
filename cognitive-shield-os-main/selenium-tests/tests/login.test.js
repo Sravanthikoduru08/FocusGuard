@@ -62,6 +62,19 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
       const image = await driver.takeScreenshot();
       require('fs').writeFileSync('selenium-failure.png', image, 'base64');
       console.log('Saved screenshot of failure to selenium-failure.png');
+
+      // Fetch and print browser console logs
+      try {
+        const logs = await driver.manage().logs().get('browser');
+        console.log('=== BROWSER CONSOLE LOGS ===');
+        logs.forEach((log) => {
+          console.log(`[${log.level.name}] ${log.message}`);
+        });
+        console.log('============================');
+      } catch (logErr) {
+        console.log('Could not retrieve browser logs:', logErr.message);
+      }
+
       throw err;
     }
   });
