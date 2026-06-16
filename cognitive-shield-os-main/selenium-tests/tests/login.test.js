@@ -39,6 +39,9 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
       'Quote input not found'
     );
     
+    // Wait for hydration to complete (async scripts to run and bind events)
+    await driver.sleep(5000);
+    
     // Type in a motivational quote
     await quoteInput.clear();
     await quoteInput.sendKeys('I build for my family\'s better tomorrow.');
