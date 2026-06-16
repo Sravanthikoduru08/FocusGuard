@@ -17,9 +17,13 @@ export function Onboarding() {
   };
 
   const submit = () => {
+    console.log("Submit clicked. Quote:", quote);
     setProfile({ photo, quote: quote.trim() || "I build for my family's better tomorrow.", onboarded: true });
   };
-  const skip = () => setProfile({ onboarded: true });
+  const skip = () => {
+    console.log("Skip clicked. Setting onboarded to true.");
+    setProfile({ onboarded: true });
+  };
 
   return (
     <motion.div

@@ -43,9 +43,9 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
     await quoteInput.clear();
     await quoteInput.sendKeys('I build for my family\'s better tomorrow.');
 
-    // Find the skip button and click it to bypass onboarding quickly using JS click
-    const skipButton = await driver.findElement(By.id('skip-button'));
-    await driver.executeScript('arguments[0].click();', skipButton);
+    // Find the establish button and click it to submit onboarding using JS click
+    const establishButton = await driver.findElement(By.id('establish-button'));
+    await driver.executeScript('arguments[0].click();', establishButton);
 
     // Verify it successfully navigated to the main dashboard
     try {
