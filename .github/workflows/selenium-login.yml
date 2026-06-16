@@ -47,3 +47,10 @@ jobs:
       run: |
         cd cognitive-shield-os-main/selenium-tests
         npm run login
+
+    - name: Upload Failure Screenshot
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: selenium-failure
+        path: cognitive-shield-os-main/selenium-tests/selenium-failure.png
