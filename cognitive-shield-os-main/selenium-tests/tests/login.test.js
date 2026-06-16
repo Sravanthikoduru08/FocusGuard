@@ -13,6 +13,7 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
       options.addArguments('--headless');
       options.addArguments('--no-sandbox');
       options.addArguments('--disable-dev-shm-usage');
+      options.addArguments('--window-size=1920,1080');
     }
     
     driver = await new Builder()
@@ -42,9 +43,9 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
     await quoteInput.clear();
     await quoteInput.sendKeys('I build for my family\'s better tomorrow.');
 
-    // Find the skip button and click it to bypass onboarding quickly
+    // Find the skip button and click it to bypass onboarding quickly using JS click
     const skipButton = await driver.findElement(By.id('skip-button'));
-    await skipButton.click();
+    await driver.executeScript('arguments[0].click();', skipButton);
 
     // Verify it successfully navigated to the main dashboard
     try {
