@@ -251,6 +251,7 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         _isStudyActive.value = true
         _isQuestionPhase.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(true)
+        com.example.focusguard.engine.ProductivityTracker.recordStudySessionStart(getApplication(), topic)
         getApplication<Application>().sendBroadcast(Intent("com.example.focusguard.STUDY_STATE_CHANGED"))
         generateAIQuestion(topic)
     }
@@ -294,6 +295,7 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             deductXP(0.10)
         }
+        com.example.focusguard.engine.ProductivityTracker.recordStudySessionComplete(getApplication())
         persistStats()
         _isStudyActive.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(false)
@@ -303,6 +305,7 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
 
     fun abortStudySession() {
         deductXP(0.10)
+        com.example.focusguard.engine.ProductivityTracker.recordStudySessionAbort(getApplication())
         persistStats()
         _isStudyActive.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(false)

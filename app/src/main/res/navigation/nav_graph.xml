@@ -70,4 +70,15 @@
     <action
         android:id="@+id/action_global_AppSelectionFragment"
         app:destination="@id/AppSelectionFragment" />
+
+    <fragment
+        android:id="@+id/TeacherReportFragment"
+        android:name="com.example.focusguard.LocalUserStorageFragment"
+        android:label="Teacher Report"
+        tools:layout="@layout/fragment_teacher_report" />
+
+    <action
+        android:id="@+id/action_global_TeacherReportFragment"
+        app:destination="@id/TeacherReportFragment" />
+
 </navigation>

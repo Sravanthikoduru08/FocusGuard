@@ -42,6 +42,10 @@ class AnalyticsFragment : Fragment() {
         binding.btnManageBlocks.setOnClickListener {
             findNavController().navigate(R.id.action_global_AppSelectionFragment)
         }
+
+        binding.btnTeacherReport.setOnClickListener {
+            findNavController().navigate(R.id.action_global_TeacherReportFragment)
+        }
     }
 
     private fun updateFocusHeatmap(history: List<Int>) {
