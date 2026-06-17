@@ -1,7 +1,13 @@
 package com.example.focusguard.engine
 
 import android.content.Context
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Environment
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.Timestamp
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -35,15 +41,23 @@ data class DailyLog(
 object ProductivityTracker {
     private const val PREFS_NAME = "FocusGuardProductivity"
 
-    // ─── File location (no permission needed) ───
-    // Path: /sdcard/Android/data/com.example.focusguard/files/focusguard_data.txt
+    // ─── File location ───
+    // Expected path: /sdcard/Android/data/com.example.focusguard/files/focusguard_data.txt
     private fun getDataFile(context: Context): File {
-        val dir = context.getExternalFilesDir(null) ?: context.filesDir
-        return File(dir, "focusguard_data.txt")
+        val externalDir = context.getExternalFilesDir(null)
+        val dir = if (externalDir != null && externalDir.exists()) {
+            externalDir
+        } else {
+            Log.w("ProductivityTracker", "External storage unavailable, falling back to internal storage")
+            context.filesDir
+        }
+        val file = File(dir, "focusguard_data.txt")
+        Log.d("ProductivityTracker", "Data file path: ${file.absolutePath}")
+        return file
     }
 
     // ─── Auto-saves readable .txt every time data changes ───
-    private fun saveToTextFile(context: Context) {
+    fun saveToTextFile(context: Context) {
         try {
             val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val focusPrefs = context.getSharedPreferences("FocusGuardPrefs", Context.MODE_PRIVATE)
@@ -99,7 +113,7 @@ object ProductivityTracker {
                 topics.forEachIndexed { i, t -> sb.appendLine("  ${i + 1}. $t") }
             }
             sb.appendLine()
-            sb.appendLine("--- Daily Log (Last 7 Days) ---")
+            sb.appendLine("--- Daily Log (Last 10 Days) ---")
             sb.appendLine(String.format("%-12s | %-10s | %-10s | %-9s | %-10s",
                 "Date", "Study Min", "Sessions", "Focus%", "Blocked"))
             sb.appendLine("--------------------------------------------------------------")
@@ -122,8 +136,27 @@ object ProductivityTracker {
             sb.appendLine("File Location: ${getDataFile(context).absolutePath}")
             sb.appendLine("================================================")
 
-            FileWriter(getDataFile(context), false).use { it.write(sb.toString()) }
+            val dataFile = getDataFile(context)
+            FileWriter(dataFile, false).use { it.write(sb.toString()) }
+            Log.d("ProductivityTracker", "File written successfully: ${dataFile.absolutePath} (${dataFile.length()} bytes)")
+            // Notify MediaStore so file managers can see the file immediately
+            try {
+                MediaScannerConnection.scanFile(
+                    context,
+                    arrayOf(dataFile.absolutePath),
+                    arrayOf("text/plain")
+                ) { path, uri ->
+                    Log.d("ProductivityTracker", "MediaStore scan complete: $path -> $uri")
+                }
+            } catch (scanEx: Exception) {
+                Log.w("ProductivityTracker", "MediaStore scan failed (non-critical): ${scanEx.message}")
+            }
+
+            // Sync with Firebase
+            val stats = getStats(context, avgFocus, streak, xp)
+            syncToFirebase(context, stats)
         } catch (e: Exception) {
+            Log.e("ProductivityTracker", "Failed to write data file: ${e.message}")
             e.printStackTrace()
         }
     }
@@ -247,7 +280,7 @@ object ProductivityTracker {
         logsArray.put(todayLog)
 
         val trimmedArray = JSONArray()
-        val startIdx = if (logsArray.length() > 7) logsArray.length() - 7 else 0
+        val startIdx = if (logsArray.length() > 10) logsArray.length() - 10 else 0
         for (i in startIdx until logsArray.length()) trimmedArray.put(logsArray.get(i))
         prefs.edit().putString("daily_logs", trimmedArray.toString()).apply()
     }
@@ -331,6 +364,53 @@ object ProductivityTracker {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    private fun syncToFirebase(context: Context, stats: ProductivityStats) {
+        try {
+            val db = FirebaseFirestore.getInstance()
+            val focusPrefs = context.getSharedPreferences("FocusGuardPrefs", Context.MODE_PRIVATE)
+            val studentName = focusPrefs.getString("student_name", "Student") ?: "Student"
+            val deviceId = android.provider.Settings.Secure.getString(context.contentResolver, android.provider.Settings.Secure.ANDROID_ID) ?: "unknown_device"
+
+            val payload = hashMapOf(
+                "student_name" to studentName,
+                "device_id" to deviceId,
+                "last_updated" to Timestamp.now(),
+                "app_open_count" to stats.appOpenCount,
+                "study_sessions_started" to stats.studySessionsStarted,
+                "study_sessions_completed" to stats.studySessionsCompleted,
+                "study_sessions_aborted" to stats.studySessionsAborted,
+                "total_study_time_ms" to stats.totalStudyTimeMs,
+                "blocked_app_attempts" to stats.blockedAppAttempts,
+                "recovery_sessions" to stats.recoverySessions,
+                "current_streak" to stats.currentStreak,
+                "total_xp" to stats.totalXp,
+                "avg_focus_score" to stats.avgFocusScore,
+                "topics_studied" to stats.topicsStudied,
+                "daily_logs" to stats.dailyLogs.map { log ->
+                    mapOf(
+                        "date" to log.date,
+                        "study_minutes" to log.studyMinutes,
+                        "sessions_completed" to log.sessionsCompleted,
+                        "avg_focus" to log.avgFocus,
+                        "blocked_attempts" to log.blockedAttempts
+                    )
+                }
+            )
+
+            db.collection("productivity_stats")
+                .document(deviceId)
+                .set(payload, SetOptions.merge())
+                .addOnSuccessListener {
+                    Log.d("ProductivityTracker", "Firebase sync successful for device: $deviceId")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ProductivityTracker", "Firebase sync failed: ${e.message}")
+                }
+        } catch (e: Exception) {
+            Log.e("ProductivityTracker", "Failed to sync with Firebase: ${e.message}")
         }
     }
 }

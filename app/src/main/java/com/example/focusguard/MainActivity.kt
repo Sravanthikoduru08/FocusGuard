@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         
+        com.example.focusguard.engine.SampleDataSeeder.seedIfNeeded(this)
         com.example.focusguard.engine.CognitiveStateEngine.loadBlockedApps(this)
         com.example.focusguard.engine.ProductivityTracker.incrementAppOpen(this)
     }

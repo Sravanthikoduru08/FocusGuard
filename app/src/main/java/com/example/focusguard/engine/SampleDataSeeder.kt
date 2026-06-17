@@ -23,16 +23,16 @@ object SampleDataSeeder {
 
         val days = listOf(
             // date,        studyMin, sessionsCompleted, avgFocus, blockedAttempts
-            Triple("2026-06-08", mapOf("study_minutes" to 0,  "sessions_completed" to 0, "avg_focus" to 0,  "focus_readings" to 0, "blocked_attempts" to 0)),
-            Triple("2026-06-09", mapOf("study_minutes" to 35, "sessions_completed" to 1, "avg_focus" to 70, "focus_readings" to 7, "blocked_attempts" to 3)),
-            Triple("2026-06-10", mapOf("study_minutes" to 50, "sessions_completed" to 2, "avg_focus" to 74, "focus_readings" to 10,"blocked_attempts" to 2)),
-            Triple("2026-06-11", mapOf("study_minutes" to 20, "sessions_completed" to 1, "avg_focus" to 68, "focus_readings" to 4, "blocked_attempts" to 4)),
-            Triple("2026-06-12", mapOf("study_minutes" to 65, "sessions_completed" to 2, "avg_focus" to 79, "focus_readings" to 13,"blocked_attempts" to 1)),
-            Triple("2026-06-13", mapOf("study_minutes" to 0,  "sessions_completed" to 0, "avg_focus" to 0,  "focus_readings" to 0, "blocked_attempts" to 0)),
-            Triple("2026-06-14", mapOf("study_minutes" to 45, "sessions_completed" to 2, "avg_focus" to 75, "focus_readings" to 9, "blocked_attempts" to 2)),
-            Triple("2026-06-15", mapOf("study_minutes" to 90, "sessions_completed" to 3, "avg_focus" to 82, "focus_readings" to 18,"blocked_attempts" to 3)),
-            Triple("2026-06-16", mapOf("study_minutes" to 75, "sessions_completed" to 3, "avg_focus" to 80, "focus_readings" to 15,"blocked_attempts" to 5)),
-            Triple("2026-06-17", mapOf("study_minutes" to 55, "sessions_completed" to 2, "avg_focus" to 78, "focus_readings" to 11,"blocked_attempts" to 3))
+            Pair("2026-06-08", mapOf("study_minutes" to 0,  "sessions_completed" to 0, "avg_focus" to 0,  "focus_readings" to 0, "blocked_attempts" to 0)),
+            Pair("2026-06-09", mapOf("study_minutes" to 35, "sessions_completed" to 1, "avg_focus" to 70, "focus_readings" to 7, "blocked_attempts" to 3)),
+            Pair("2026-06-10", mapOf("study_minutes" to 50, "sessions_completed" to 2, "avg_focus" to 74, "focus_readings" to 10,"blocked_attempts" to 2)),
+            Pair("2026-06-11", mapOf("study_minutes" to 20, "sessions_completed" to 1, "avg_focus" to 68, "focus_readings" to 4, "blocked_attempts" to 4)),
+            Pair("2026-06-12", mapOf("study_minutes" to 65, "sessions_completed" to 2, "avg_focus" to 79, "focus_readings" to 13,"blocked_attempts" to 1)),
+            Pair("2026-06-13", mapOf("study_minutes" to 0,  "sessions_completed" to 0, "avg_focus" to 0,  "focus_readings" to 0, "blocked_attempts" to 0)),
+            Pair("2026-06-14", mapOf("study_minutes" to 45, "sessions_completed" to 2, "avg_focus" to 75, "focus_readings" to 9, "blocked_attempts" to 2)),
+            Pair("2026-06-15", mapOf("study_minutes" to 90, "sessions_completed" to 3, "avg_focus" to 82, "focus_readings" to 18,"blocked_attempts" to 3)),
+            Pair("2026-06-16", mapOf("study_minutes" to 75, "sessions_completed" to 3, "avg_focus" to 80, "focus_readings" to 15,"blocked_attempts" to 5)),
+            Pair("2026-06-17", mapOf("study_minutes" to 55, "sessions_completed" to 2, "avg_focus" to 78, "focus_readings" to 11,"blocked_attempts" to 3))
         )
 
         days.forEach { (date, data) ->
@@ -42,14 +42,14 @@ object SampleDataSeeder {
             dailyLogs.put(obj)
         }
 
-        // ── Aggregate totals from daily logs ──
-        val totalStudyMs     = (35 + 50 + 20 + 65 + 45 + 90 + 75 + 55).toLong() * 60 * 1000  // in ms
-        val totalSessions    = 1 + 2 + 1 + 2 + 2 + 3 + 3 + 2  // 16 completed
-        val totalStarted     = totalSessions + 2                 // 18 started (2 aborted)
-        val totalAborted     = 2
-        val totalBlocked     = 3 + 2 + 4 + 1 + 2 + 3 + 5 + 3   // 23
-        val totalFocusTotal  = (70*7 + 74*10 + 68*4 + 79*13 + 75*9 + 82*18 + 80*15 + 78*11).toLong()
-        val totalFocusCount  = 7 + 10 + 4 + 13 + 9 + 18 + 15 + 11  // 87 readings
+        // ── Aggregate totals from daily logs (matching requested sample output) ──
+        val totalStudyMs     = 870L * 60 * 1000  // 14.5 hours
+        val totalSessions    = 14
+        val totalStarted     = 18
+        val totalAborted     = 4
+        val totalBlocked     = 23
+        val totalFocusCount  = 87
+        val totalFocusTotal  = (87 * 76).toLong() // Average 76%
 
         val topics = setOf(
             "Python Basics",
@@ -89,5 +89,6 @@ object SampleDataSeeder {
 
         // Write the .txt file immediately so it's ready to show
         ProductivityTracker.updateFocusScoreSnapshot(context, 78)
+        ProductivityTracker.saveToTextFile(context)
     }
 }

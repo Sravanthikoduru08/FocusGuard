@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "367240498055",
+    "project_id": "focusguard-57cf6",
+    "storage_bucket": "focusguard-57cf6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367240498055:android:3094cccd39fb80d2e36122",
+        "android_client_info": {
+          "package_name": "com.example.focusguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeknO0fAI1VHyS-FoyD1YrRCz325loYKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
