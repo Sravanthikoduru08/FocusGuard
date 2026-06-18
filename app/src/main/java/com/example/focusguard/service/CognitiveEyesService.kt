@@ -38,11 +38,12 @@ class CognitiveEyesService : AccessibilityService() {
         super.onServiceConnected()
         Log.d(TAG, "Cognitive Eyes Connected.")
         
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(studyStateReceiver, IntentFilter("com.example.focusguard.STUDY_STATE_CHANGED"), Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            registerReceiver(studyStateReceiver, IntentFilter("com.example.focusguard.STUDY_STATE_CHANGED"))
-        }
+        androidx.core.content.ContextCompat.registerReceiver(
+            this,
+            studyStateReceiver,
+            IntentFilter("com.example.focusguard.STUDY_STATE_CHANGED"),
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
+        )
         
         // Observe blocked apps changes
         CognitiveStateEngine.blockedApps

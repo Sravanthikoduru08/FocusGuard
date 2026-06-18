@@ -252,7 +252,10 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         _isQuestionPhase.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(true)
         com.example.focusguard.engine.ProductivityTracker.recordStudySessionStart(getApplication(), topic)
-        getApplication<Application>().sendBroadcast(Intent("com.example.focusguard.STUDY_STATE_CHANGED"))
+        val studyStateIntent = Intent("com.example.focusguard.STUDY_STATE_CHANGED").apply {
+            setPackage(getApplication<Application>().packageName)
+        }
+        getApplication<Application>().sendBroadcast(studyStateIntent)
         generateAIQuestion(topic)
     }
 
@@ -299,7 +302,10 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         persistStats()
         _isStudyActive.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(false)
-        getApplication<Application>().sendBroadcast(Intent("com.example.focusguard.STUDY_STATE_CHANGED"))
+        val completeIntent = Intent("com.example.focusguard.STUDY_STATE_CHANGED").apply {
+            setPackage(getApplication<Application>().packageName)
+        }
+        getApplication<Application>().sendBroadcast(completeIntent)
         _studyTopic.value = ""
     }
 
@@ -309,7 +315,10 @@ class FocusViewModel(application: Application) : AndroidViewModel(application) {
         persistStats()
         _isStudyActive.value = false
         com.example.focusguard.engine.CognitiveStateEngine.setStudyModeActive(false)
-        getApplication<Application>().sendBroadcast(Intent("com.example.focusguard.STUDY_STATE_CHANGED"))
+        val abortIntent = Intent("com.example.focusguard.STUDY_STATE_CHANGED").apply {
+            setPackage(getApplication<Application>().packageName)
+        }
+        getApplication<Application>().sendBroadcast(abortIntent)
         _studyTopic.value = ""
     }
 

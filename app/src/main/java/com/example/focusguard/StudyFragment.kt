@@ -63,11 +63,12 @@ class StudyFragment : Fragment() {
             addAction("com.example.focusguard.TIMER_RESUMED")
         }
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireContext().registerReceiver(timerReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            requireContext().registerReceiver(timerReceiver, filter)
-        }
+        androidx.core.content.ContextCompat.registerReceiver(
+            requireContext(),
+            timerReceiver,
+            filter,
+            androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
+        )
 
         setupDurationButtons()
         setupInitialState()

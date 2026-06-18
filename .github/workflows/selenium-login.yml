@@ -91,7 +91,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: website-e2e-${{ matrix.browser }}-artifacts
-        path: website-artifacts/
+        path: website-artifacts/ 
         if-no-files-found: warn
 
   android-build-and-test:
@@ -131,7 +131,6 @@ jobs:
 
     - name: Run Android Lint Checks
       run: ./gradlew lintDebug
-      continue-on-error: true
 
     - name: Run JUnit Tests
       run: ./gradlew testDebugUnitTest
