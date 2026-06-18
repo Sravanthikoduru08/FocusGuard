@@ -1,0 +1,5 @@
+FocusGuard Android App Static Security Scan Report
+==================================================
+
+[MEDIUM] android:allowBackup is set to true. This allows adb backup extraction of sensitive local app data.
+[MEDIUM] CognitiveEyesService Accessibility Service is marked exported='false'. The OS might fail to bind to it.

@@ -1,25 +1,48 @@
 const { Builder, By, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
+const firefox = require('selenium-webdriver/firefox');
+const edge = require('selenium-webdriver/edge');
 const assert = require('assert');
+const fs = require('fs');
 
 describe('FocusGuard Web E2E Onboarding Test', function () {
-  this.timeout(30000);
+  this.timeout(45000);
   let driver;
+  const browserName = (process.env.BROWSER || 'chrome').toLowerCase();
 
   before(async function () {
-    const options = new chrome.Options();
-    // Run headless in GitHub Actions environment
-    if (process.env.CI) {
-      options.addArguments('--headless');
-      options.addArguments('--no-sandbox');
-      options.addArguments('--disable-dev-shm-usage');
-      options.addArguments('--window-size=1920,1080');
+    console.log(`Initializing Selenium WebDriver for browser: ${browserName}`);
+    let builder = new Builder().forBrowser(browserName);
+
+    if (browserName === 'chrome') {
+      const options = new chrome.Options();
+      if (process.env.CI) {
+        options.addArguments('--headless');
+        options.addArguments('--no-sandbox');
+        options.addArguments('--disable-dev-shm-usage');
+        options.addArguments('--window-size=1920,1080');
+      }
+      builder = builder.setChromeOptions(options);
+    } else if (browserName === 'firefox') {
+      const options = new firefox.Options();
+      if (process.env.CI) {
+        options.addArguments('--headless');
+      }
+      builder = builder.setFirefoxOptions(options);
+    } else if (browserName === 'edge') {
+      const options = new edge.Options();
+      if (process.env.CI) {
+        options.addArguments('--headless');
+        options.addArguments('--no-sandbox');
+        options.addArguments('--disable-dev-shm-usage');
+        options.addArguments('--window-size=1920,1080');
+      }
+      builder = builder.setEdgeOptions(options);
+    } else {
+      throw new Error(`Unsupported browser: ${browserName}`);
     }
-    
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(options)
-      .build();
+
+    driver = await builder.build();
   });
 
   after(async function () {
@@ -35,7 +58,7 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
     // Wait for the quote-input to be visible on the page
     const quoteInput = await driver.wait(
       until.elementLocated(By.id('quote-input')),
-      15000,
+      20000,
       'Quote input not found'
     );
     
@@ -54,17 +77,24 @@ describe('FocusGuard Web E2E Onboarding Test', function () {
     try {
       const dashboardContainer = await driver.wait(
         until.elementLocated(By.id('dashboard-container')),
-        10000,
+        15000,
         'Dashboard container not found'
       );
       const isDisplayed = await dashboardContainer.isDisplayed();
       assert.strictEqual(isDisplayed, true, 'Dashboard should be displayed after onboarding');
-      console.log('E2E Onboarding Test Passed successfully!');
+      console.log(`E2E Onboarding Test Passed successfully on ${browserName}!`);
+
+      // Capture success screenshot to verify it renders correctly
+      const image = await driver.takeScreenshot();
+      const screenshotName = `selenium-success-${browserName}.png`;
+      fs.writeFileSync(screenshotName, image, 'base64');
+      console.log(`Saved screenshot of success to ${screenshotName}`);
     } catch (err) {
       // Capture screenshot on failure to debug
       const image = await driver.takeScreenshot();
-      require('fs').writeFileSync('selenium-failure.png', image, 'base64');
-      console.log('Saved screenshot of failure to selenium-failure.png');
+      const screenshotName = `selenium-failure-${browserName}.png`;
+      fs.writeFileSync(screenshotName, image, 'base64');
+      console.log(`Saved screenshot of failure to ${screenshotName}`);
 
       // Fetch and print browser console logs
       try {
