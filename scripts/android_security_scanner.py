@@ -2,7 +2,7 @@ import os
 import re
 
 def scan_android_manifest():
-    manifest_path = "app/src/main/AndroidManifest.xml"
+    manifest_path = "android-app/app/src/main/AndroidManifest.xml"
     issues = []
     if not os.path.exists(manifest_path):
         return [f"Manifest not found at {manifest_path}"]
@@ -33,7 +33,7 @@ def scan_source_code_for_secrets():
         r'AIzaSy[a-zA-Z0-9_\-]{33}' # Google/Gemini key pattern
     ]
     
-    src_dir = "app/src/main"
+    src_dir = "android-app/app/src/main"
     if not os.path.exists(src_dir):
         return issues
         
@@ -74,7 +74,8 @@ def run_scan():
     print("=" * 60)
     
     # Write to a report file
-    with open("android-security-violations.txt", "w", encoding="utf-8") as f:
+    os.makedirs("reports/security", exist_ok=True)
+    with open("reports/security/android-security-violations.txt", "w", encoding="utf-8") as f:
         f.write("FocusGuard Android App Static Security Scan Report\n")
         f.write("=" * 50 + "\n\n")
         if all_issues:
@@ -83,7 +84,7 @@ def run_scan():
         else:
             f.write("No high or medium risk security issues identified in static analysis.\n")
             
-    print("Saved static scan report to android-security-violations.txt")
+    print("Saved static scan report to reports/security/android-security-violations.txt")
 
 if __name__ == "__main__":
     run_scan()

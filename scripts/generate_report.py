@@ -906,7 +906,9 @@ def create_security_report():
             ws.column_dimensions[col_letter].width = max(max_len + 3, 12)
 
     # Save workbook
-    file_path = "FocusGuard_Security_Assessment.xlsx"
+    import os
+    os.makedirs("reports/security", exist_ok=True)
+    file_path = "reports/security/FocusGuard_Security_Assessment.xlsx"
     wb.save(file_path)
     print(f"Report saved successfully as: {file_path}")
 
