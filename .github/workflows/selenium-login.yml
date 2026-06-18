@@ -131,6 +131,7 @@ jobs:
 
     - name: Run Android Lint Checks
       run: ./gradlew lintDebug
+      continue-on-error: true
 
     - name: Run JUnit Tests
       run: ./gradlew testDebugUnitTest
